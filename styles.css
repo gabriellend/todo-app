@@ -96,18 +96,25 @@ main {
   align-items: flex-start;
 }
 
+.main-content {
+  display: none;
+  flex-direction: column;
+  width: 85%;
+}
+
 .main-list-container {
   position: relative;
   top: -25px;
-  display: none;
-  width: 85%;
+  display: flex;
+  flex-direction: column;
   border-radius: 5px;
   background-color: var(--list-bg-color);
 }
 
 .main-list {
   list-style-type: none;
-  /* overflow: scroll; */
+  max-height: 380px;
+  overflow-y: auto;
 }
 
 .main-list-item {
@@ -223,6 +230,33 @@ main {
 .main-list-footer button.clear-completed:hover {
   cursor: pointer;
   color: var(--list-font-color);
+}
+
+.main-view-states {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background-color: var(--list-bg-color);
+  padding: 15px;
+}
+
+.main-view-states button.state {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-family: var(--Josefin-Sans);
+  color: var(--placeholder-font-color);
+}
+
+.main-view-states button.state:hover {
+  color: var(--list-font-color);
+  cursor: pointer;
+}
+
+.main-view-states button.state:focus,
+.main-view-states button.state:focus:hover {
+  color: hsl(220, 98%, 61%);
 }
 
 .attribution {

@@ -1,8 +1,8 @@
 const body = document.querySelector("body");
 const themeToggle = document.querySelector(".toggle-theme");
 const input = document.querySelector("input");
+const mainContentContainer = document.querySelector(".main-content");
 const list = document.querySelector(".main-list");
-const listContainer = document.querySelector(".main-list-container");
 const itemsCompletedSpan = document.querySelector(".items-completed");
 const listFooter = document.querySelector(".main-list-footer");
 const makePluralSpan = document.querySelector(".make-plural");
@@ -88,7 +88,7 @@ const toggleComplete = (listItem, item, checkbox) => {
 
 const removeItem = (listItem) => {
   if (list.children.length === 1) {
-    listContainer.style.display = "none";
+    mainContentContainer.style.display = "none";
     id = 0;
   }
 
@@ -102,15 +102,8 @@ const addItem = (e) => {
     const newListItem = createListItem(inputValue);
     list.appendChild(newListItem);
 
-    listContainer.style.display = "block";
+    mainContentContainer.style.display = "flex";
     input.value = "";
-
-    // if the footer is showing (meaning there is a completed task)
-    // the last list item should have a bottom border
-    // otherwise it should not
-    // if (!isElementVisible(listFooter)) {
-    //   list.lastChild.style.borderBottom = "none";
-    // }
   }
 };
 
