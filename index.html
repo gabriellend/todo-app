@@ -35,6 +35,7 @@
           id="create-todo"
           type="text"
           placeholder="Create a new todo..."
+          autofocus
         />
       </div>
     </header>
@@ -42,7 +43,10 @@
       <div class="main-list-container">
         <ul class="main-list"></ul>
         <div class="main-list-footer">
-          <p class="items-left">1 item completed</p>
+          <p>
+            <span class="items-completed"></span> item
+            <span class="make-plural"></span>completed
+          </p>
           <button class="clear-completed">Clear completed</button>
         </div>
       </div>

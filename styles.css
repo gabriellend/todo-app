@@ -182,7 +182,7 @@ main {
 }
 
 .main-list-item .item:hover {
-  cursor: pointer;
+  cursor: grab;
 }
 
 .main-list-item .delete-icon {
@@ -191,11 +191,15 @@ main {
   height: 15px;
 }
 
+.main-list-item .delete-icon:hover {
+  cursor: pointer;
+  fill: var(--list-font-color);
+}
+
 .main-list-container .main-list-footer {
   display: none;
   color: var(--list-font-color);
   height: 52.2px;
-  display: flex;
   justify-content: space-between;
   align-items: center;
   color: var(--muted-color);
@@ -203,7 +207,7 @@ main {
   padding: 0 15px;
 }
 
-.main-list-footer button {
+.main-list-footer button.clear-completed {
   background: none;
   border: none;
   color: var(--muted-color);
@@ -211,8 +215,9 @@ main {
   font-size: 0.75rem;
 }
 
-.main-list-footer button:hover {
+.main-list-footer button.clear-completed:hover {
   cursor: pointer;
+  color: var(--list-font-color);
 }
 
 .attribution {
