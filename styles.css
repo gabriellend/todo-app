@@ -128,6 +128,7 @@ main {
 }
 
 .main-list-item .checkbox {
+  position: relative;
   width: 20px;
   height: 20px;
   border: 1px solid var(--muted-color);
@@ -135,6 +136,28 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.main-list-item .checkbox:hover {
+  background: linear-gradient(
+    to bottom right,
+    hsl(192, 100%, 67%),
+    hsl(280, 87%, 65%)
+  );
+  cursor: pointer;
+}
+
+.main-list-item .checkbox:hover::after {
+  content: "";
+  position: relative;
+  top: 0px;
+  left: 0px;
+  border: none;
+  width: 18px;
+  height: 18px;
+  background: white;
+  z-index: 1;
+  border-radius: inherit;
 }
 
 .main-list-item .checkbox.complete {
@@ -145,6 +168,10 @@ main {
   );
 }
 
+.main-list-item .checkbox.complete:hover::after {
+  content: none;
+}
+
 .main-list-item .item {
   margin-top: 3px;
 }
@@ -152,6 +179,10 @@ main {
 .main-list-item .item.crossed-out {
   text-decoration: line-through;
   color: var(--muted-color);
+}
+
+.main-list-item .item:hover {
+  cursor: pointer;
 }
 
 .main-list-item .delete-icon {
@@ -178,6 +209,10 @@ main {
   color: var(--muted-color);
   font-family: var(--Josefin-Sans);
   font-size: 0.75rem;
+}
+
+.main-list-footer button:hover {
+  cursor: pointer;
 }
 
 .attribution {

@@ -3,7 +3,6 @@ const themeToggle = document.querySelector(".toggle-theme");
 const input = document.querySelector("input");
 const list = document.querySelector(".main-list");
 const listContainer = document.querySelector(".main-list-container");
-const footer = document.querySelector(".main-list-footer");
 
 let id = 0;
 
@@ -59,15 +58,18 @@ const toggleComplete = (item, checkbox) => {
 
   item.classList.toggle("crossed-out");
   checkbox.classList.toggle("complete");
-  const svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>`;
-  checkbox.innerHTML = svgString;
-  const checkmark = checkbox.querySelector("svg");
+
+  if (checkbox.innerHTML === "") {
+    const svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>`;
+    checkbox.innerHTML = svgString;
+  } else {
+    checkbox.innerHTML = "";
+  }
 };
 
 const removeItem = (listItem) => {
   if (list.children.length === 1) {
     listContainer.style.display = "none";
-    footer.style.display = "none";
     id = 0;
   }
 
