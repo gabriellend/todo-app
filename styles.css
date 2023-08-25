@@ -1,0 +1,146 @@
+* {
+  /* border: 1px solid black; */
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --placeholder-font-color: hsl(236, 9%, 61%);
+  --list-font-color: hsl(235, 19%, 35%);
+  --list-bg-color: white;
+  --bg-color: hsl(0, 0%, 98%);
+  --muted-color: hsl(233, 11%, 84%);
+  --bg-image: url(images/bg-mobile-light.jpg);
+}
+
+.dark-theme {
+  --placeholder-font-color: hsl(234, 11%, 52%);
+  --list-font-color: hsl(234, 39%, 85%);
+  --list-bg-color: hsl(235, 24%, 19%);
+  --bg-color: hsl(235, 21%, 11%);
+  --muted-color: hsl(233, 14%, 35%);
+  --bg-image: url(images/bg-mobile-dark.jpg);
+}
+
+body {
+  font-family: "Josefin Sans", sans-serif;
+  width: 375px;
+  margin: auto;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+header {
+  background-image: var(--bg-image);
+  letter-spacing: 0.5rem;
+  width: 375px;
+  height: 200px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 85%;
+  height: 60%;
+}
+
+.header-content-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content-title h1 {
+  font-size: 1.85rem;
+  font-weight: 400;
+  margin-top: 5px;
+}
+
+.header-content-title .toggle-theme {
+  width: 23px;
+  height: 23px;
+}
+
+input {
+  border-radius: 5px;
+  padding: 15px;
+  border: none;
+  background-color: var(--list-bg-color);
+  color: var(--list-font-color);
+}
+
+input::placeholder {
+  color: var(--placeholder-font-color);
+}
+
+input:focus-visible {
+  outline: none;
+}
+
+main {
+  background-color: var(--bg-color);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+main ul {
+  position: relative;
+  top: -25px;
+  display: none;
+  width: 85%;
+  border-radius: 5px;
+  list-style-type: none;
+  background-color: var(--list-bg-color);
+  /* overflow: scroll; */
+}
+
+main li {
+  color: var(--list-font-color);
+  padding: 15px 15px 15px 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  gap: 15px;
+  align-items: center;
+  border-bottom: 0.5px solid var(--muted-color);
+}
+
+main .hidden-checkbox {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+main .checkbox {
+  width: 15px;
+  height: 15px;
+  border: 1px solid var(--muted-color);
+  border-radius: 50%;
+}
+
+main .item {
+  margin-top: 3px;
+}
+
+main .delete-icon {
+  fill: var(--muted-color);
+}
+
+.attribution {
+  font-size: 11px;
+  text-align: center;
+  background-color: var(--bg-color);
+  color: var(--placeholder-font-color);
+  padding: 5px 0;
+}
+
+.attribution a {
+  color: hsl(228, 45%, 44%);
+}
