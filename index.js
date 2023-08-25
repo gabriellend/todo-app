@@ -1,7 +1,9 @@
 const body = document.querySelector("body");
 const themeToggle = document.querySelector(".toggle-theme");
 const input = document.querySelector("input");
-const list = document.querySelector(".list");
+const list = document.querySelector(".main-list");
+const listContainer = document.querySelector(".main-list-container");
+const footer = document.querySelector(".main-list-footer");
 
 let id = 0;
 
@@ -19,7 +21,7 @@ const toggleTheme = () => {
 
 const createListItem = (inputValue) => {
   const listItem = document.createElement("li");
-  listItem.classList.add("list-item");
+  listItem.classList.add("main-list-item");
 
   // Used for accessibility
   const hiddenCheckbox = document.createElement("input");
@@ -37,15 +39,26 @@ const createListItem = (inputValue) => {
   item.classList.add("item");
 
   // Delete X icon
-  const deleteSvg = `<svg class="delete-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path fill-rule="evenodd" d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"/></svg>`;
-
+  const svgString = `<svg class="delete-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path fill-rule="evenodd" d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"/></svg>`;
   const svgContainer = document.createElement("div");
-  svgContainer.innerHTML = deleteSvg;
+  svgContainer.innerHTML = svgString;
+  const deleteIcon = svgContainer.querySelector(".delete-icon");
+  deleteIcon.addEventListener("click", () => removeItem(listItem));
 
   listItem.append(hiddenCheckbox, checkbox, item, svgContainer);
   id++;
 
   return listItem;
+};
+
+const removeItem = (listItem) => {
+  if (list.children.length === 1) {
+    listContainer.style.display = "none";
+    footer.style.display = "none";
+    id = 0;
+  }
+
+  listItem.remove();
 };
 
 const addItem = (e) => {
@@ -55,7 +68,7 @@ const addItem = (e) => {
     const newListItem = createListItem(inputValue);
     list.appendChild(newListItem);
 
-    list.style.display = "block";
+    listContainer.style.display = "block";
     input.value = "";
   }
 };

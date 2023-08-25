@@ -11,6 +11,7 @@
   --bg-color: hsl(0, 0%, 98%);
   --muted-color: hsl(233, 11%, 84%);
   --bg-image: url(images/bg-mobile-light.jpg);
+  --Josefin-Sans: "Josefin Sans", sans-serif;
 }
 
 .dark-theme {
@@ -22,8 +23,13 @@
   --bg-image: url(images/bg-mobile-dark.jpg);
 }
 
+html,
 body {
-  font-family: "Josefin Sans", sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--Josefin-Sans);
   width: 375px;
   margin: auto;
   height: 100vh;
@@ -90,18 +96,21 @@ main {
   align-items: flex-start;
 }
 
-main ul {
+.main-list-container {
   position: relative;
   top: -25px;
   display: none;
   width: 85%;
   border-radius: 5px;
-  list-style-type: none;
   background-color: var(--list-bg-color);
+}
+
+.main-list {
+  list-style-type: none;
   /* overflow: scroll; */
 }
 
-main li {
+.main-list-item {
   color: var(--list-font-color);
   padding: 15px 15px 15px 0;
   position: relative;
@@ -112,25 +121,45 @@ main li {
   border-bottom: 0.5px solid var(--muted-color);
 }
 
-main .hidden-checkbox {
+.main-list-item .hidden-checkbox {
   visibility: hidden;
   width: 0;
   height: 0;
 }
 
-main .checkbox {
+.main-list-item .checkbox {
   width: 15px;
   height: 15px;
   border: 1px solid var(--muted-color);
   border-radius: 50%;
 }
 
-main .item {
+.main-list-item .item {
   margin-top: 3px;
 }
 
-main .delete-icon {
+.main-list-item .delete-icon {
   fill: var(--muted-color);
+}
+
+.main-list-container .main-list-footer {
+  display: none;
+  color: var(--list-font-color);
+  height: 52.2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted-color);
+  font-size: 0.75rem;
+  padding: 0 15px;
+}
+
+.main-list-footer button {
+  background: none;
+  border: none;
+  color: var(--muted-color);
+  font-family: var(--Josefin-Sans);
+  font-size: 0.75rem;
 }
 
 .attribution {
