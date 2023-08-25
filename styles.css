@@ -128,18 +128,36 @@ main {
 }
 
 .main-list-item .checkbox {
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   border: 1px solid var(--muted-color);
   border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-list-item .checkbox.complete {
+  background-image: linear-gradient(
+    to bottom right,
+    hsl(192, 100%, 67%),
+    hsl(280, 87%, 65%)
+  );
 }
 
 .main-list-item .item {
   margin-top: 3px;
 }
 
+.main-list-item .item.crossed-out {
+  text-decoration: line-through;
+  color: var(--muted-color);
+}
+
 .main-list-item .delete-icon {
   fill: var(--muted-color);
+  width: 15px;
+  height: 15px;
 }
 
 .main-list-container .main-list-footer {
