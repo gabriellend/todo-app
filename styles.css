@@ -121,6 +121,10 @@ main {
   border-bottom: 0.5px solid var(--muted-color);
 }
 
+.main-list :last-child {
+  border-bottom: none;
+}
+
 .main-list-item .hidden-checkbox {
   visibility: hidden;
   width: 0;
@@ -205,6 +209,7 @@ main {
   color: var(--muted-color);
   font-size: 0.75rem;
   padding: 0 15px;
+  border-top: 0.5px solid var(--muted-color);
 }
 
 .main-list-footer button.clear-completed {

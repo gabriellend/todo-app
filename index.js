@@ -104,8 +104,19 @@ const addItem = (e) => {
 
     listContainer.style.display = "block";
     input.value = "";
+
+    // if the footer is showing (meaning there is a completed task)
+    // the last list item should have a bottom border
+    // otherwise it should not
+    // if (!isElementVisible(listFooter)) {
+    //   list.lastChild.style.borderBottom = "none";
+    // }
   }
 };
+
+function isElementVisible(element) {
+  return window.getComputedStyle(element).display !== "none";
+}
 
 themeToggle.addEventListener("click", toggleTheme);
 input.addEventListener("keydown", addItem);
