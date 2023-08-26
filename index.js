@@ -71,6 +71,10 @@ const toggleComplete = (listItem, item, checkbox) => {
     checkbox.innerHTML = "";
   }
 
+  updateFooter();
+};
+
+const updateFooter = () => {
   const completedListItems = document.querySelectorAll(
     ".main-list-item.complete"
   );
@@ -85,6 +89,7 @@ const toggleComplete = (listItem, item, checkbox) => {
     }
   } else {
     itemsCompletedSpan.textContent = "";
+    makePluralSpan.textContent = "";
     listFooter.style.display = "none";
   }
 };
@@ -96,6 +101,8 @@ const removeItem = (listItem) => {
   }
 
   listItem.remove();
+
+  updateFooter();
 };
 
 const addItem = (e) => {
@@ -106,6 +113,7 @@ const addItem = (e) => {
     list.appendChild(newListItem);
 
     mainContentContainer.style.display = "flex";
+    // JUMP1: Simulates selecting the "All" button
     allButton.style.color = "hsl(220, 98%, 61%)";
     input.value = "";
   }
@@ -130,6 +138,7 @@ const filterList = (e) => {
       });
       break;
     case "Active":
+      // JUMP1: Remove simulated styles
       allButton.style.color = "";
       hideErrorModal();
 
@@ -142,6 +151,7 @@ const filterList = (e) => {
       });
       break;
     case "Completed":
+      // JUMP1: Remove simulated styles
       allButton.style.color = "";
 
       const listNodesArray = [...listItems];
