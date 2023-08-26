@@ -7,6 +7,7 @@ const list = document.querySelector(".main-list");
 const listFooter = document.querySelector(".main-list-footer");
 const itemsCompletedSpan = document.querySelector(".items-completed");
 const makePluralSpan = document.querySelector(".make-plural");
+const clearCompletedButton = document.querySelector(".clear-completed");
 const stateButtonsContainer = document.querySelector(".main-view-states");
 const allButton = document.querySelector(".all");
 const errorModal = document.querySelector(".main-error-modal");
@@ -128,7 +129,7 @@ function isElementVisible(element) {
 
 const filterList = (e) => {
   const button = e.target;
-  const listItems = list.querySelectorAll(".main-list-item");
+  const listItems = document.querySelectorAll(".main-list-item");
   let listNodesArray;
 
   switch (button.textContent) {
@@ -202,6 +203,12 @@ const hideErrorModal = () => {
   errorModal.style.display = "none";
 };
 
+const clearCompleted = () => {
+  const completedItems = document.querySelectorAll(".main-list-item.complete");
+  completedItems.forEach((item) => removeItem(item));
+};
+
 themeToggle.addEventListener("click", toggleTheme);
 input.addEventListener("keydown", addItem);
+clearCompletedButton.addEventListener("click", clearCompleted);
 stateButtonsContainer.addEventListener("click", filterList);
