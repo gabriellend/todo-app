@@ -173,7 +173,7 @@ main {
   border: none;
   width: 18px;
   height: 18px;
-  background: white;
+  background: var(--list-bg-color);
   z-index: 1;
   border-radius: inherit;
 }
