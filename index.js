@@ -2,10 +2,13 @@ const body = document.querySelector("body");
 const themeToggle = document.querySelector(".toggle-theme");
 const input = document.querySelector("input");
 const mainContentContainer = document.querySelector(".main-content");
+const listContainer = document.querySelector(".main-list-container");
 const list = document.querySelector(".main-list");
-const itemsCompletedSpan = document.querySelector(".items-completed");
 const listFooter = document.querySelector(".main-list-footer");
+const itemsCompletedSpan = document.querySelector(".items-completed");
 const makePluralSpan = document.querySelector(".make-plural");
+const stateButtonsContainer = document.querySelector(".main-view-states");
+const allButton = document.querySelector(".all");
 
 let id = 0;
 
@@ -68,14 +71,14 @@ const toggleComplete = (listItem, item, checkbox) => {
     checkbox.innerHTML = "";
   }
 
-  const completeListItems = document.querySelectorAll(
+  const completedListItems = document.querySelectorAll(
     ".main-list-item.complete"
   );
 
-  if (completeListItems.length > 0) {
-    itemsCompletedSpan.textContent = completeListItems.length;
+  if (completedListItems.length > 0) {
+    itemsCompletedSpan.textContent = completedListItems.length;
     listFooter.style.display = "flex";
-    if (completeListItems.length > 1) {
+    if (completedListItems.length > 1) {
       makePluralSpan.textContent = "s";
     } else {
       makePluralSpan.textContent = "";
@@ -103,6 +106,7 @@ const addItem = (e) => {
     list.appendChild(newListItem);
 
     mainContentContainer.style.display = "flex";
+    allButton.style.color = "hsl(220, 98%, 61%)";
     input.value = "";
   }
 };
@@ -111,5 +115,66 @@ function isElementVisible(element) {
   return window.getComputedStyle(element).display !== "none";
 }
 
+const filterList = (e) => {
+  const button = e.target;
+  const listItems = list.querySelectorAll(".main-list-item");
+
+  switch (button.textContent) {
+    case "All":
+      hideErrorModal();
+
+      listItems.forEach((item) => {
+        if (!isElementVisible(item)) {
+          item.style.display = "grid";
+        }
+      });
+      break;
+    case "Active":
+      allButton.style.color = "";
+      hideErrorModal();
+
+      listItems.forEach((item) => {
+        if (item.classList.contains("complete")) {
+          item.style.display = "none";
+        } else if (!item.classList.contains("complete")) {
+          item.style.display = "grid";
+        }
+      });
+      break;
+    case "Completed":
+      allButton.style.color = "";
+
+      const listNodesArray = [...listItems];
+      const completedItems = listNodesArray.filter((item) =>
+        item.classList.contains("complete")
+      );
+      if (completedItems.length === 0) {
+        showErrorModal();
+      }
+
+      listItems.forEach((item) => {
+        if (item.classList.contains("complete")) {
+          item.style.display = "grid";
+        } else if (!item.classList.contains("complete")) {
+          item.style.display = "none";
+        }
+      });
+      break;
+  }
+};
+
+const showErrorModal = () => {
+  const errorModal = document.querySelector(".main-error-modal");
+  errorModal.style.height = window.getComputedStyle(listContainer).height;
+  errorModal.style.display = "flex";
+};
+
+const hideErrorModal = () => {
+  const errorModal = document.querySelector(".main-error-modal");
+  errorModal.style.height = "";
+  errorModal.style.display = "none";
+};
+
 themeToggle.addEventListener("click", toggleTheme);
 input.addEventListener("keydown", addItem);
+stateButtonsContainer.addEventListener("click", filterList);

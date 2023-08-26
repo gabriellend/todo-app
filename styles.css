@@ -102,6 +102,13 @@ main {
   width: 85%;
 }
 
+.main-error-modal {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  color: var(--list-font-color);
+}
+
 .main-list-container {
   position: relative;
   top: -25px;
@@ -113,7 +120,7 @@ main {
 
 .main-list {
   list-style-type: none;
-  max-height: 380px;
+  max-height: 360px;
   overflow-y: auto;
 }
 
@@ -207,7 +214,7 @@ main {
   fill: var(--list-font-color);
 }
 
-.main-list-container .main-list-footer {
+.main-list-footer {
   display: none;
   color: var(--list-font-color);
   height: 52.2px;
@@ -235,7 +242,6 @@ main {
 .main-view-states {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 20px;
   background-color: var(--list-bg-color);
   padding: 15px;
@@ -257,6 +263,12 @@ main {
 .main-view-states button.state:focus,
 .main-view-states button.state:focus:hover {
   color: hsl(220, 98%, 61%);
+}
+
+.main-reorder-instructions {
+  margin: auto;
+  color: var(--muted-color);
+  margin-top: 40px;
 }
 
 .attribution {
