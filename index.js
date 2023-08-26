@@ -9,6 +9,7 @@ const itemsCompletedSpan = document.querySelector(".items-completed");
 const makePluralSpan = document.querySelector(".make-plural");
 const clearCompletedButton = document.querySelector(".clear-completed");
 const stateButtonsContainer = document.querySelector(".main-view-states");
+const stateButtons = document.querySelectorAll(".state");
 const allButton = document.querySelector(".all");
 const errorModal = document.querySelector(".main-error-modal");
 
@@ -30,12 +31,7 @@ const createListItem = (inputValue) => {
   const listItem = document.createElement("li");
   listItem.classList.add("main-list-item");
 
-  const item = document.createElement("label");
-  item.htmlFor = id;
-  item.textContent = inputValue;
-  item.classList.add("item");
-
-  // Used for accessibility
+  // Hidden checkbox used for accessibility
   const hiddenCheckbox = document.createElement("input");
   hiddenCheckbox.type = "checkbox";
   hiddenCheckbox.id = id;
@@ -47,6 +43,11 @@ const createListItem = (inputValue) => {
   checkbox.addEventListener("click", () =>
     toggleComplete(listItem, item, checkbox)
   );
+
+  const item = document.createElement("label");
+  item.htmlFor = id;
+  item.textContent = inputValue;
+  item.classList.add("item");
 
   // Delete X icon
   const svgString = `<svg class="delete-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path fill-rule="evenodd" d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"/></svg>`;
@@ -60,7 +61,7 @@ const createListItem = (inputValue) => {
 
   return listItem;
 };
-
+// TODO: handle state buttons
 const toggleComplete = (listItem, item, checkbox) => {
   item.classList.toggle("crossed-out");
   checkbox.classList.toggle("complete");
@@ -71,6 +72,33 @@ const toggleComplete = (listItem, item, checkbox) => {
     checkbox.innerHTML = svgString;
   } else {
     checkbox.innerHTML = "";
+  }
+
+  const selectedButton = [...stateButtons].find((button) =>
+    button.classList.contains("selected")
+  );
+  if (selectedButton.classList.contains("completed")) {
+    if (!listItem.classList.contains("complete")) {
+      const completedListItems = document.querySelectorAll(
+        ".main-list-item.complete"
+      );
+      if (completedListItems.length === 0) {
+        showErrorModal("completed");
+      }
+
+      listItem.style.display = "none";
+    }
+  } else if (selectedButton.classList.contains("active")) {
+    if (listItem.classList.contains("complete")) {
+      const activeListItems = document.querySelectorAll(
+        ".main-list-item:not(.complete)"
+      );
+      if (activeListItems.length === 0) {
+        showErrorModal("active");
+      }
+
+      listItem.style.display = "none";
+    }
   }
 
   updateFooter();
@@ -117,8 +145,7 @@ const addItem = (e) => {
     list.appendChild(newListItem);
 
     mainContentContainer.style.display = "flex";
-    // JUMP1: Simulates selecting the "All" button
-    allButton.style.color = "hsl(220, 98%, 61%)";
+    allButton.classList.add("selected");
     input.value = "";
   }
 };
@@ -130,10 +157,11 @@ function isElementVisible(element) {
 const filterList = (e) => {
   const button = e.target;
   const listItems = document.querySelectorAll(".main-list-item");
-  let listNodesArray;
+  stateButtons.forEach((button) => button.classList.remove("selected"));
 
   switch (button.textContent) {
     case "All":
+      button.classList.add("selected");
       hideErrorModal();
 
       listItems.forEach((item) => {
@@ -143,12 +171,10 @@ const filterList = (e) => {
       });
       break;
     case "Active":
-      // JUMP1: Remove simulated styles
-      allButton.style.color = "";
+      button.classList.add("selected");
       hideErrorModal();
 
-      listNodesArray = [...listItems];
-      const activeItems = listNodesArray.filter(
+      const activeItems = [...listItems].filter(
         (item) => !item.classList.contains("complete")
       );
       if (activeItems.length === 0) {
@@ -164,12 +190,10 @@ const filterList = (e) => {
       });
       break;
     case "Completed":
-      // JUMP1: Remove simulated styles
-      allButton.style.color = "";
+      button.classList.add("selected");
       hideErrorModal();
 
-      listNodesArray = [...listItems];
-      const completedItems = listNodesArray.filter((item) =>
+      const completedItems = [...listItems].filter((item) =>
         item.classList.contains("complete")
       );
       if (completedItems.length === 0) {

@@ -260,8 +260,8 @@ main {
   cursor: pointer;
 }
 
-.main-view-states button.state:focus,
-.main-view-states button.state:focus:hover {
+.main-view-states button.state.selected,
+.main-view-states button.state.selected:hover {
   color: hsl(220, 98%, 61%);
 }
 
@@ -270,3 +270,5 @@ main {
   color: var(--muted-color);
   margin-top: 40px;
 }
+
+/* TODO: media queries */
