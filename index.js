@@ -9,6 +9,7 @@ const itemsCompletedSpan = document.querySelector(".items-completed");
 const makePluralSpan = document.querySelector(".make-plural");
 const stateButtonsContainer = document.querySelector(".main-view-states");
 const allButton = document.querySelector(".all");
+const errorModal = document.querySelector(".main-error-modal");
 
 let id = 0;
 
@@ -108,6 +109,8 @@ const removeItem = (listItem) => {
 const addItem = (e) => {
   if (e.keyCode === 13) {
     e.preventDefault();
+    hideErrorModal();
+
     const inputValue = e.target.value;
     const newListItem = createListItem(inputValue);
     list.appendChild(newListItem);
@@ -126,6 +129,7 @@ function isElementVisible(element) {
 const filterList = (e) => {
   const button = e.target;
   const listItems = list.querySelectorAll(".main-list-item");
+  let listNodesArray;
 
   switch (button.textContent) {
     case "All":
@@ -142,6 +146,14 @@ const filterList = (e) => {
       allButton.style.color = "";
       hideErrorModal();
 
+      listNodesArray = [...listItems];
+      const activeItems = listNodesArray.filter(
+        (item) => !item.classList.contains("complete")
+      );
+      if (activeItems.length === 0) {
+        showErrorModal("active");
+      }
+
       listItems.forEach((item) => {
         if (item.classList.contains("complete")) {
           item.style.display = "none";
@@ -153,13 +165,14 @@ const filterList = (e) => {
     case "Completed":
       // JUMP1: Remove simulated styles
       allButton.style.color = "";
+      hideErrorModal();
 
-      const listNodesArray = [...listItems];
+      listNodesArray = [...listItems];
       const completedItems = listNodesArray.filter((item) =>
         item.classList.contains("complete")
       );
       if (completedItems.length === 0) {
-        showErrorModal();
+        showErrorModal("completed");
       }
 
       listItems.forEach((item) => {
@@ -173,14 +186,18 @@ const filterList = (e) => {
   }
 };
 
-const showErrorModal = () => {
-  const errorModal = document.querySelector(".main-error-modal");
-  errorModal.style.height = window.getComputedStyle(listContainer).height;
+const showErrorModal = (type) => {
+  errorModal.style.height = window.getComputedStyle(list).height;
   errorModal.style.display = "flex";
+
+  if (type === "completed") {
+    errorModal.textContent = "You haven't completed any items yet!";
+  } else if (type === "active") {
+    errorModal.textContent = "You've completed all your items!";
+  }
 };
 
 const hideErrorModal = () => {
-  const errorModal = document.querySelector(".main-error-modal");
   errorModal.style.height = "";
   errorModal.style.display = "none";
 };
