@@ -42,3 +42,5 @@ Users should be able to:
 - Mobile-first workflow
 
 ### What I learned
+
+Getting the borders of the checkboxes to be a linear gradient on hover was an interesting challenge. I didn't know that you can't set a border color to a linear gradient. I solved this by setting the checkbox's hover background to a linear gradient and then putting a slightly smaller ::after element on top of it that was the same color as the list background. This gives the illusion of a linear gradient border.
