@@ -143,7 +143,6 @@ const addItem = (e) => {
 
     const inputValue = e.target.value;
     const newListItem = createListItem(inputValue);
-    list.appendChild(newListItem);
 
     mainContentContainer.style.display = "flex";
 
@@ -153,6 +152,14 @@ const addItem = (e) => {
     if (!buttonSelected) {
       allButton.classList.add("selected");
     }
+
+    const selectedButton = [...stateButtons].find((button) =>
+      button.classList.contains("selected")
+    );
+    if (selectedButton.classList.contains("completed")) {
+      newListItem.style.display = "none";
+    }
+    list.appendChild(newListItem);
 
     input.value = "";
 
