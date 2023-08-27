@@ -5,7 +5,7 @@ const mainContentContainer = document.querySelector(".main-content");
 const listContainer = document.querySelector(".main-list-container");
 const list = document.querySelector(".main-list");
 const listFooter = document.querySelector(".main-list-footer");
-const itemsCompletedSpan = document.querySelector(".items-completed");
+const itemsLeftSpan = document.querySelector(".items-left");
 const makePluralSpan = document.querySelector(".make-plural");
 const clearCompletedButton = document.querySelector(".clear-completed");
 const stateButtonsContainer = document.querySelector(".main-view-states");
@@ -61,7 +61,7 @@ const createListItem = (inputValue) => {
 
   return listItem;
 };
-// TODO: handle state buttons
+
 const toggleComplete = (listItem, item, checkbox) => {
   item.classList.toggle("crossed-out");
   checkbox.classList.toggle("complete");
@@ -105,20 +105,21 @@ const toggleComplete = (listItem, item, checkbox) => {
 };
 
 const updateFooter = () => {
-  const completedListItems = document.querySelectorAll(
-    ".main-list-item.complete"
+  const activeListItems = document.querySelectorAll(
+    ".main-list-item:not(.complete)"
   );
 
-  if (completedListItems.length > 0) {
-    itemsCompletedSpan.textContent = completedListItems.length;
-    listFooter.style.display = "flex";
-    if (completedListItems.length > 1) {
-      makePluralSpan.textContent = "s";
-    } else {
-      makePluralSpan.textContent = "";
-    }
+  itemsLeftSpan.textContent = activeListItems.length;
+  listFooter.style.display = "flex";
+
+  if (activeListItems.length !== 1) {
+    makePluralSpan.textContent = "s";
   } else {
-    itemsCompletedSpan.textContent = "";
+    makePluralSpan.textContent = "";
+  }
+
+  if (list.children.length === 0) {
+    itemsLeftSpan.textContent = "";
     makePluralSpan.textContent = "";
     listFooter.style.display = "none";
   }
@@ -136,7 +137,7 @@ const removeItem = (listItem) => {
 };
 
 const addItem = (e) => {
-  if (e.keyCode === 13) {
+  if (e.keyCode === 13 && e.target.value.trim() !== "") {
     e.preventDefault();
     hideErrorModal();
 
@@ -145,8 +146,17 @@ const addItem = (e) => {
     list.appendChild(newListItem);
 
     mainContentContainer.style.display = "flex";
-    allButton.classList.add("selected");
+
+    const buttonSelected = [...stateButtons].some((button) =>
+      button.classList.contains("selected")
+    );
+    if (!buttonSelected) {
+      allButton.classList.add("selected");
+    }
+
     input.value = "";
+
+    updateFooter();
   }
 };
 
