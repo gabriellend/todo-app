@@ -277,7 +277,7 @@ main {
 .main-reorder-instructions {
   margin: auto;
   color: var(--muted-color);
-  margin-top: 90px;
+  margin-top: 85px;
 }
 
 @media screen and (min-width: 376px) {
@@ -326,6 +326,10 @@ main {
     max-width: 500px;
   }
 
+  .main-list-container {
+    top: -45px;
+  }
+
   .main-list {
     max-height: 320px;
   }
@@ -342,6 +346,6 @@ main {
   .main-reorder-instructions {
     margin: auto;
     font-size: 0.8rem;
-    margin-top: 20px;
+    margin-top: 3px;
   }
 }
