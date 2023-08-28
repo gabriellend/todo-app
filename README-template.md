@@ -44,3 +44,5 @@ Users should be able to:
 ### What I learned
 
 Getting the borders of the checkboxes to be a linear gradient on hover was an interesting challenge. I didn't know that you can't set a border color to a linear gradient. I solved this by setting the checkbox's hover background to a linear gradient and then putting a slightly smaller ::after element on top of it that was the same color as the list background. This gives the illusion of a linear gradient border.
+
+Another new thing was adding the dragging capability to the list items. I'd never come across the dragging event listeners before so this was a whole new world. It was pretty straightforward, though it was challenging figuring out how to change the cursor while dragging and also to style the dragged element.

@@ -50,6 +50,7 @@ const createListItem = (inputValue) => {
   item.htmlFor = id;
   item.textContent = inputValue;
   item.classList.add("item");
+  item.addEventListener("dblclick", editItem);
 
   // Delete X icon
   const svgString = `<svg class="delete-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path fill-rule="evenodd" d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"/></svg>`;
@@ -273,6 +274,38 @@ const dropItem = (e) => {
       list.insertBefore(draggedItem, e.target.nextElementSibling); // Insert after target
     }
   }
+};
+
+const saveNewValue = (e, nextSibling, parent) => {
+  if (e.keyCode === 13 && e.target.value.trim() !== "") {
+    const newValue = e.target.value;
+    e.target.remove();
+
+    const newItem = document.createElement("label");
+    newItem.htmlFor = id;
+    newItem.textContent = newValue;
+    newItem.classList.add("item");
+    newItem.addEventListener("dblclick", editItem);
+    parent.insertBefore(newItem, nextSibling);
+  } else {
+    // use filter function here
+    parent.remove();
+  }
+};
+
+const editItem = (e) => {
+  const ogItemValue = e.target.textContent;
+  const nextSibling = e.target.nextElementSibling;
+  const parentLi = e.target.parentElement;
+  e.target.remove();
+
+  const tempInput = document.createElement("input");
+  tempInput.value = ogItemValue;
+  tempInput.type = "text";
+  tempInput.addEventListener("keydown", (e) =>
+    saveNewValue(e, nextSibling, parentLi)
+  );
+  parentLi.insertBefore(tempInput, nextSibling);
 };
 
 themeToggle.addEventListener("click", toggleTheme);
