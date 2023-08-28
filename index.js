@@ -14,6 +14,7 @@ const allButton = document.querySelector(".all");
 const errorModal = document.querySelector(".main-error-modal");
 
 let id = 0;
+let draggedItem = null;
 
 const toggleTheme = () => {
   body.classList.toggle("dark-theme");
@@ -30,6 +31,7 @@ const toggleTheme = () => {
 const createListItem = (inputValue) => {
   const listItem = document.createElement("li");
   listItem.classList.add("main-list-item");
+  listItem.draggable = true;
 
   // Hidden checkbox used for accessibility
   const hiddenCheckbox = document.createElement("input");
@@ -249,7 +251,34 @@ const clearCompleted = () => {
   completedItems.forEach((item) => removeItem(item));
 };
 
+const setDraggedItem = (e) => {
+  draggedItem = e.target;
+};
+
+const allowDrop = (e) => {
+  e.preventDefault(); // allows dropping
+};
+
+const dropItem = (e) => {
+  e.preventDefault();
+
+  if (e.target.tagName === "LI") {
+    const boundingRect = e.target.getBoundingClientRect();
+    const targetMidpoint = boundingRect.y + boundingRect.height / 2;
+
+    // If the cursor is in the top half of the target
+    if (e.clientY < targetMidpoint) {
+      list.insertBefore(draggedItem, e.target); // Insert before target
+    } else {
+      list.insertBefore(draggedItem, e.target.nextElementSibling); // Insert after target
+    }
+  }
+};
+
 themeToggle.addEventListener("click", toggleTheme);
 input.addEventListener("keydown", addItem);
 clearCompletedButton.addEventListener("click", clearCompleted);
 stateButtonsContainer.addEventListener("click", filterList);
+list.addEventListener("dragstart", setDraggedItem);
+list.addEventListener("dragover", allowDrop);
+list.addEventListener("drop", dropItem);

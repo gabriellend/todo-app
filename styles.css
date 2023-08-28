@@ -78,11 +78,11 @@ input {
   border: none;
   background-color: var(--list-bg-color);
   color: var(--list-font-color);
+  font-family: var(--Josefin-Sans);
 }
 
 input::placeholder {
   color: var(--placeholder-font-color);
-  letter-spacing: 0.05rem;
 }
 
 input:focus-visible {
@@ -316,10 +316,11 @@ main {
 
   input {
     padding: 22px;
+    font-size: 0.9rem;
   }
 
   input::placeholder {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   .main-content {
