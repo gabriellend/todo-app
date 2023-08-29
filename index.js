@@ -70,6 +70,7 @@ const toggleComplete = (listItem, item, checkbox) => {
   checkbox.classList.toggle("complete");
   listItem.classList.toggle("complete");
 
+  // Add checkmark
   if (checkbox.innerHTML === "") {
     const svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="9"><path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6"/></svg>`;
     checkbox.innerHTML = svgString;
@@ -77,6 +78,8 @@ const toggleComplete = (listItem, item, checkbox) => {
     checkbox.innerHTML = "";
   }
 
+  // If there is one item in "Completed" or "Active" that is toggled,
+  // that item will disappear and a message will appear
   const selectedButton = [...stateButtons].find((button) =>
     button.classList.contains("selected")
   );
@@ -104,69 +107,78 @@ const toggleComplete = (listItem, item, checkbox) => {
     }
   }
 
-  updateFooter();
+  updateItemsLeft();
 };
 
-const updateFooter = () => {
+const updateItemsLeft = () => {
+  // Necessary to do this reset?
+  if (list.children.length === 0) {
+    itemsLeftSpan.textContent = "";
+    makePluralSpan.textContent = "";
+    return;
+  }
+
   const activeListItems = document.querySelectorAll(
     ".main-list-item:not(.complete)"
   );
 
   itemsLeftSpan.textContent = activeListItems.length;
-  listFooter.style.display = "flex";
 
   if (activeListItems.length !== 1) {
     makePluralSpan.textContent = "s";
   } else {
     makePluralSpan.textContent = "";
   }
-
-  if (list.children.length === 0) {
-    itemsLeftSpan.textContent = "";
-    makePluralSpan.textContent = "";
-    listFooter.style.display = "none";
-  }
 };
 
 const removeItem = (listItem) => {
-  if (list.children.length === 1) {
+  listItem.remove();
+  updateItemsLeft();
+
+  if (list.children.length === 0) {
     mainContentContainer.style.display = "none";
     id = 0;
   }
-
-  listItem.remove();
-
-  updateFooter();
 };
 
 const addItem = (e) => {
+  // If the enter key was pressed and the input has a value
   if (e.keyCode === 13 && e.target.value.trim() !== "") {
     e.preventDefault();
-    hideErrorModal();
+    if (errorModal.classList.contains("visible")) {
+      hideErrorModal();
+    }
 
     const inputValue = e.target.value;
     const newListItem = createListItem(inputValue);
 
     mainContentContainer.style.display = "flex";
 
-    const buttonSelected = [...stateButtons].some((button) =>
-      button.classList.contains("selected")
-    );
-    if (!buttonSelected) {
+    // No buttons are selected when the first item is added,
+    // so "All" should be selected
+    if (list.children.length === 0) {
       allButton.classList.add("selected");
     }
 
+    // If viewing "Completed" and a new item is added, switch to
+    // the "All" view
     const selectedButton = [...stateButtons].find((button) =>
       button.classList.contains("selected")
     );
     if (selectedButton.classList.contains("completed")) {
-      newListItem.style.display = "none";
+      selectedButton.classList.remove("selected");
+      allButton.classList.add("selected");
+      const listItems = document.querySelectorAll(".main-list-item");
+      listItems.forEach((item) => {
+        if (!isElementVisible(item)) {
+          item.style.display = "grid";
+        }
+      });
     }
+
     list.appendChild(newListItem);
-
     input.value = "";
-
-    updateFooter();
+    updateItemsLeft();
   }
 };
 
@@ -234,6 +246,7 @@ const filterList = (e) => {
 const showErrorModal = (type) => {
   errorModal.style.height = window.getComputedStyle(list).height;
   errorModal.style.display = "flex";
+  errorModal.classList.add("visible");
 
   if (type === "completed") {
     errorModal.textContent = "You haven't completed any items yet!";
@@ -245,6 +258,7 @@ const showErrorModal = (type) => {
 const hideErrorModal = () => {
   errorModal.style.height = "";
   errorModal.style.display = "none";
+  errorModal.classList.remove("visible");
 };
 
 const clearCompleted = () => {
@@ -263,6 +277,7 @@ const allowDrop = (e) => {
 const dropItem = (e) => {
   e.preventDefault();
 
+  // "target" is the element being hovered over
   if (e.target.tagName === "LI") {
     const targetBoundingRect = e.target.getBoundingClientRect();
     const targetMidpoint = targetBoundingRect.y + targetBoundingRect.height / 2;
@@ -276,39 +291,37 @@ const dropItem = (e) => {
   }
 };
 
-const saveNewValue = (e, nextSibling, parent) => {
+const saveNewValue = (e, parent, ogItem) => {
   if (e.keyCode === 13) {
     if (e.target.value.trim() !== "") {
       const newValue = e.target.value;
       e.target.remove();
 
-      const newItem = document.createElement("label");
-      newItem.htmlFor = parent.id;
-      newItem.textContent = newValue;
-      newItem.classList.add("item");
-      newItem.addEventListener("dblclick", editItem);
-      parent.insertBefore(newItem, nextSibling);
+      ogItem.textContent = newValue;
+      ogItem.style.display = "grid";
     } else {
       parent.remove();
+      updateItemsLeft();
     }
   }
 };
 
 const editItem = (e) => {
-  const ogItemValue = e.target.textContent;
-  const nextSibling = e.target.nextElementSibling;
+  const ogItem = e.target;
+  const deleteIcon = e.target.nextElementSibling;
   const parentLi = e.target.parentElement;
-  e.target.remove();
+
+  ogItem.style.display = "none";
 
   const tempInput = document.createElement("input");
-  tempInput.value = ogItemValue;
+  tempInput.value = ogItem.textContent;
   tempInput.type = "text";
   tempInput.classList.add("temporary");
   tempInput.addEventListener("keydown", (e) =>
-    saveNewValue(e, nextSibling, parentLi)
+    saveNewValue(e, parentLi, ogItem)
   );
 
-  parentLi.insertBefore(tempInput, nextSibling);
+  parentLi.insertBefore(tempInput, deleteIcon);
   tempInput.focus();
 };
 

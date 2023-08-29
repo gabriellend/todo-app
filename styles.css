@@ -219,7 +219,7 @@ main {
 
 .main-list-footer {
   position: relative;
-  display: none;
+  display: flex;
   color: var(--list-font-color);
   height: 52.2px;
   justify-content: space-between;
