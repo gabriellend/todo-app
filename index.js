@@ -264,8 +264,8 @@ const dropItem = (e) => {
   e.preventDefault();
 
   if (e.target.tagName === "LI") {
-    const boundingRect = e.target.getBoundingClientRect();
-    const targetMidpoint = boundingRect.y + boundingRect.height / 2;
+    const targetBoundingRect = e.target.getBoundingClientRect();
+    const targetMidpoint = targetBoundingRect.y + targetBoundingRect.height / 2;
 
     // If the cursor is in the top half of the target
     if (e.clientY < targetMidpoint) {
@@ -277,19 +277,20 @@ const dropItem = (e) => {
 };
 
 const saveNewValue = (e, nextSibling, parent) => {
-  if (e.keyCode === 13 && e.target.value.trim() !== "") {
-    const newValue = e.target.value;
-    e.target.remove();
+  if (e.keyCode === 13) {
+    if (e.target.value.trim() !== "") {
+      const newValue = e.target.value;
+      e.target.remove();
 
-    const newItem = document.createElement("label");
-    newItem.htmlFor = id;
-    newItem.textContent = newValue;
-    newItem.classList.add("item");
-    newItem.addEventListener("dblclick", editItem);
-    parent.insertBefore(newItem, nextSibling);
-  } else {
-    // use filter function here
-    parent.remove();
+      const newItem = document.createElement("label");
+      newItem.htmlFor = parent.id;
+      newItem.textContent = newValue;
+      newItem.classList.add("item");
+      newItem.addEventListener("dblclick", editItem);
+      parent.insertBefore(newItem, nextSibling);
+    } else {
+      parent.remove();
+    }
   }
 };
 
@@ -302,10 +303,13 @@ const editItem = (e) => {
   const tempInput = document.createElement("input");
   tempInput.value = ogItemValue;
   tempInput.type = "text";
+  tempInput.classList.add("temporary");
   tempInput.addEventListener("keydown", (e) =>
     saveNewValue(e, nextSibling, parentLi)
   );
+
   parentLi.insertBefore(tempInput, nextSibling);
+  tempInput.focus();
 };
 
 themeToggle.addEventListener("click", toggleTheme);
